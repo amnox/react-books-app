@@ -32,8 +32,8 @@ class BooksApp extends React.Component {
       }
       return boo;
     })
-    this.setState({newS})
-    BooksAPI.update(book,newShelf)
+    
+    BooksAPI.update(book,newShelf).then(this.setState({newS}))
       //.then(
     /*BooksAPI.getAll()
       .then((books) => {

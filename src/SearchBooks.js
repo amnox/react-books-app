@@ -14,15 +14,19 @@ class SearchBooks extends React.Component{
       this.handleShelfChange = this.handleShelfChange.bind(this);
       this.state = {
         query_books:[],
+        query:''
       }
   }
   handleChange(event) {
+    this.setState({query:event.target.value});
     BooksAPI.search(event.target.value,2)
     .then((books)=>{
-      	//console.log(books);
-        if(typeof books === 'undefined'){
+      	//console.log(books.length);
+        if(this.state.query===''){
           this.setState({query_books: []})
-          console.log('empty');
+          
+        }else if(typeof books.length==='undefined'){
+          this.setState({query_books: []})
         }else{
         //this.setState({query_books: books})
           this.setState((prevState) => {
@@ -40,7 +44,7 @@ class SearchBooks extends React.Component{
 		  });
         }
       }
-    ).then(console.log(this.state))
+    )
   }
 
   handleShelfChange(event) {
@@ -68,10 +72,11 @@ class SearchBooks extends React.Component{
             <div className="search-books-results">
               <ol className="books-grid">
            		{this.state.query_books.map((book)=>(
+                 
     				<li key={book.id}>
                     <div className="book">
                     <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks.thumbnail}')` }}></div>
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks ? book.imageLinks.thumbnail : null}')` }}></div>
                         <div className="book-shelf-changer">
                         <select onChange={this.handleShelfChange} id = {book.id}>
                             <option value="none" disabled>Move to...</option>
